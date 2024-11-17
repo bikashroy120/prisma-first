@@ -1,12 +1,13 @@
 import { Request, Response } from "express";
-import { CategoryServices } from "./category.services";
+import { PostServices } from "./post.services";
 
-const createCategory = async (req: Request, res: Response) => {
+
+const createPosts = async (req: Request, res: Response) => {
     try {
 
         const data = req.body;
 
-        const result = await CategoryServices.createCategoryServices(data)
+        const result = await PostServices.createPostServices(data)
 
         res.status(201).json({
             success: true,
@@ -23,14 +24,18 @@ const createCategory = async (req: Request, res: Response) => {
 }
 
 
-const getCategory = async (req: Request, res: Response) => {
+const getPosts = async (req: Request, res: Response) => {
     try {
-        const result = await CategoryServices.getCategoryServices()
 
-        res.status(201).json({
+        const query = req.query;
+
+        const result = await PostServices.getPostServices(query)
+
+        res.status(200).json({
             success: true,
             message: "Category created",
-            data: result
+            total: result.total,
+            data: result.data
         })
     } catch (error) {
         const err = error as Error
@@ -42,7 +47,7 @@ const getCategory = async (req: Request, res: Response) => {
 }
 
 
-export const CategoryController = {
-    createCategory,
-    getCategory
+export const PostController = {
+    getPosts,
+    createPosts
 }
